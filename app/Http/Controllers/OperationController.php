@@ -30,6 +30,10 @@ class OperationController extends Controller
             $query->where('store_code', 'like', "%{$request->store_code}%");
         }
 
+        if ($request->filled('location')) {
+            $query->where('location', $request->location);
+        }
+
         // 4. KDV Durumu Filtresi
         if ($request->has('has_vat') && $request->has_vat !== null && $request->has_vat !== '') {
             $query->where('has_vat', $request->has_vat);
@@ -45,14 +49,16 @@ class OperationController extends Controller
         }
 
         // Sayfalamadan ÖNCE filtrelenmiş tüm kayıtların navlun toplamını alıyoruz
-        $totalFreight = (clone $query)->sum('freight_price');
+        $totalIncome  = (clone $query)->where('freight_price', '>', 0)->sum('freight_price'); // Pozitifler (Gelir)
+        $totalExpense = (clone $query)->where('freight_price', '<', 0)->sum('freight_price'); // Negatifler (Gider)
+        $netTotal     = (clone $query)->sum('freight_price');
 
         // Sayfalama (Her sayfada 25 veri) & URL parametrelerini koruma (appends)
         $operations = $query->latest('date')
             ->paginate(25)
             ->withQueryString();
 
-        return view('nakliye.index', compact('operations', 'totalFreight'));
+        return view('nakliye.index', compact('operations', 'totalIncome', 'totalExpense', 'netTotal'));
     }
 
     public function create()
@@ -76,8 +82,9 @@ class OperationController extends Controller
             'plate_number' => 'required|string|max:20',
             'supplier_name' => 'required|string|max:255',
             'quantity' => 'required|integer|min:1',
-            'freight_price' => 'required|integer|min:0',
+            'freight_price' => 'required|integer',
             'store_code' => 'required|string|max:50',
+            'location'      => 'required|in:BAYRAMPAŞA,KADIKÖY,GEBZE,İZMİT,ADAPAZARI,ANKARA',
             'has_vat' => 'required|boolean',
         ]);
 
@@ -107,8 +114,9 @@ class OperationController extends Controller
             'plate_number' => 'required|string|max:20',
             'supplier_name' => 'required|string|max:255',
             'quantity' => 'required|integer|min:1',
-            'freight_price' => 'required|integer|min:0',
+            'freight_price' => 'required|integer',
             'store_code' => 'required|string|max:50',
+            'location'      => 'required|in:BAYRAMPAŞA,KADIKÖY,GEBZE,İZMİT,ADAPAZARI,ANKARA',
             'has_vat' => 'required|boolean',
         ]);
 

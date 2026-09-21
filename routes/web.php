@@ -19,7 +19,7 @@ Route::prefix('nakliye')->name('nakliye.')->group(function () {
 });
 
 // Komisyon İşlemleri
-Route::prefix('komisyon')->name('komisyon.')->group(function () {
+Route::prefix('masraf')->name('komisyon.')->group(function () {
     Route::get('/', [CommissionController::class, 'index'])->name('index');
     Route::get('/ekle', [CommissionController::class, 'create'])->name('create');
     Route::post('/', [CommissionController::class, 'store'])->name('store');

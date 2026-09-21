@@ -21,7 +21,7 @@
     <!-- Filtreleme Kartı -->
     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-6">
         <form action="{{ route('nakliye.index') }}" method="GET" class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-3">
                 <!-- Plaka -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Plaka</label>
@@ -36,6 +36,21 @@
                            class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50">
                 </div>
 
+
+
+                <!-- Konum Filtresi -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Konum</label>
+                    <select name="location" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 bg-white">
+                        <option value="">Tümü</option>
+                        <option value="BAYRAMPAŞA" {{ request('location') == 'BAYRAMPAŞA' ? 'selected' : '' }}>BAYRAMPAŞA</option>
+                        <option value="KADIKÖY" {{ request('location') == 'KADIKÖY' ? 'selected' : '' }}>KADIKÖY</option>
+                        <option value="GEBZE" {{ request('location') == 'GEBZE' ? 'selected' : '' }}>GEBZE</option>
+                        <option value="İZMİT" {{ request('location') == 'İZMİT' ? 'selected' : '' }}>İZMİT</option>
+                        <option value="ADAPAZARI" {{ request('location') == 'ADAPAZARI' ? 'selected' : '' }}>ADAPAZARI</option>
+                        <option value="ANKARA" {{ request('location') == 'ANKARA' ? 'selected' : '' }}>ANKARA</option>
+                    </select>
+                </div>
                 <!-- Dükkan Kodu -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Dükkan Kodu</label>
@@ -70,7 +85,7 @@
 
             <!-- Filtre Butonları -->
             <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
-                @if(request()->anyFilled(['plate_number', 'supplier_name', 'store_code', 'has_vat', 'start_date', 'end_date']))
+                @if(request()->anyFilled(['plate_number', 'supplier_name', 'store_code', 'location', 'has_vat', 'start_date', 'end_date']))
                     <a href="{{ route('nakliye.index') }}" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 transition-colors">
                         Filtreleri Temizle
                     </a>
@@ -92,6 +107,7 @@
                     <th class="py-3.5 px-4">Tedarikçi</th>
                     <th class="py-3.5 px-4">Adet</th>
                     <th class="py-3.5 px-4">Navlun</th>
+                    <th class="py-3.5 px-4">Konum</th>
                     <th class="py-3.5 px-4">Dükkan Kodu</th>
                     <th class="py-3.5 px-4">KDV Durumu</th>
                     <th class="py-3.5 px-4 text-right">İşlem</th>
@@ -105,7 +121,9 @@
                         <td class="py-3 px-4">{{ $operation->supplier_name }}</td>
                         <td class="py-3 px-4">{{ number_format($operation->quantity) }}</td>
                         <td class="py-3 px-4 font-medium text-slate-900">₺{{ number_format($operation->freight_price) }}</td>
+                        <td class="py-3 px-4 font-medium text-slate-800">{{ $operation->location }}</td>
                         <td class="py-3 px-4">{{ $operation->store_code }}</td>
+
                         <td class="py-3 px-4">
                             @if($operation->has_vat)
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
@@ -118,34 +136,34 @@
                             @endif
                         </td>
                         <td class="py-3 px-4 text-right">
-    <div class="flex items-center justify-end gap-2">
-        <!-- Düzenle İkonu -->
-        <a href="{{ route('nakliye.edit', $operation) }}"
-           class="p-1.5 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
-           title="Düzenle">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-            </svg>
-        </a>
+                            <div class="flex items-center justify-end gap-2">
+                                <!-- Düzenle İkonu -->
+                                <a href="{{ route('nakliye.edit', $operation) }}"
+                                   class="p-1.5 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+                                   title="Düzenle">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </a>
 
-        <!-- Sil İkonu -->
-        <form action="{{ route('nakliye.destroy', $operation) }}" method="POST" onsubmit="return confirm('Bu nakliye kaydını silmek istediğinize emin misiniz?');" class="inline-block">
-            @csrf
-            @method('DELETE')
-            <button type="submit"
-                    class="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                    title="Sil">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                </svg>
-            </button>
-        </form>
-    </div>
-</td>
+                                <!-- Sil İkonu -->
+                                <form action="{{ route('nakliye.destroy', $operation) }}" method="POST" onsubmit="return confirm('Bu nakliye kaydını silmek istediğinize emin misiniz?');" class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                                            title="Sil">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="py-8 text-center text-slate-400">Aranan kriterlere uygun nakliye kaydı bulunamadı.</td>
+                        <td colspan="9" class="py-8 text-center text-slate-400">Aranan kriterlere uygun nakliye kaydı bulunamadı.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -156,8 +174,18 @@
                         <td colspan="4" class="py-3.5 px-4 text-right">
                             Filtrelenmiş Toplam Navlun (Tüm Sayfalar Dahil):
                         </td>
-                        <td colspan="4" class="py-3.5 px-4 text-amber-400 text-base">
-                            ₺{{ number_format($totalFreight) }}
+                        <td colspan="5" class="py-3.5 px-4 text-base space-x-3">
+                            <span class="text-emerald-400" title="Gelir">
+                                +₺{{ number_format($totalIncome, 0, ',', '.') }}
+                            </span>
+                            <span class="text-slate-500">|</span>
+                            <span class="text-rose-400" title="Gider">
+                                ₺{{ number_format($totalExpense, 0, ',', '.') }}
+                            </span>
+                            <span class="text-slate-500">|</span>
+                            <span class="text-amber-400" title="Net Bakiye">
+                                Net: ₺{{ number_format($netTotal, 0, ',', '.') }}
+                            </span>
                         </td>
                     </tr>
                 </tfoot>

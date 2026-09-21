@@ -1,14 +1,14 @@
 <x-app>
-    <x-slot:title>Komisyon İşlemleri - MertNakliyat</x-slot:title>
+    <x-slot:title>Masraf İşlemleri - MertNakliyat</x-slot:title>
 
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-bold text-slate-800">Komisyon İşlemleri</h1>
+        <h1 class="text-2xl font-bold text-slate-800">Masraf İşlemleri</h1>
         <a href="{{ route('komisyon.create') }}"
            class="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold px-4 py-2.5 rounded-lg transition-colors shadow-sm">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
             </svg>
-            <span>Yeni Komisyon Ekle</span>
+            <span>Yeni Masraf Ekle</span>
         </a>
     </div>
 
@@ -65,7 +65,7 @@
                 <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     <th class="py-3.5 px-4">Tarih</th>
                     <th class="py-3.5 px-4">Plaka</th>
-                    <th class="py-3.5 px-4">Komisyon Tutar</th>
+                    <th class="py-3.5 px-4">Masraf Tutar</th>
                     <th class="py-3.5 px-4 text-right">İşlem</th>
                 </tr>
             </thead>
@@ -85,7 +85,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="py-8 text-center text-slate-400">Aranan kriterlere uygun komisyon kaydı bulunamadı.</td>
+                        <td colspan="4" class="py-8 text-center text-slate-400">Aranan kriterlere uygun masraf kaydı bulunamadı.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -94,7 +94,7 @@
                 <tfoot class="bg-slate-900 text-white font-semibold">
                     <tr>
                         <td colspan="2" class="py-3.5 px-4 text-right">
-                            Filtrelenmiş Toplam Komisyon (Tüm Sayfalar Dahil):
+                            Filtrelenmiş Toplam Masraf (Tüm Sayfalar Dahil):
                         </td>
                         <td colspan="2" class="py-3.5 px-4 text-amber-400 text-base">
                             ₺{{ number_format($totalCommission) }}

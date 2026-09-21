@@ -15,6 +15,7 @@ class Operation extends Model
         'freight_price',
         'store_code',
         'date',
+        'location',
         'has_vat',
     ];
 
