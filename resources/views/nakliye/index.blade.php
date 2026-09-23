@@ -120,7 +120,9 @@
                         <td class="py-3 px-4 font-semibold text-slate-900">{{ $operation->plate_number }}</td>
                         <td class="py-3 px-4">{{ $operation->supplier_name }}</td>
                         <td class="py-3 px-4">{{ number_format($operation->quantity) }}</td>
-                        <td class="py-3 px-4 font-medium text-slate-900">₺{{ number_format($operation->freight_price) }}</td>
+                        <td class="py-3 px-4 font-medium {{ $operation->freight_price < 0 ? 'text-rose-600' : 'text-emerald-600' }}">
+    ₺{{ number_format($operation->freight_price) }}
+</td>
                         <td class="py-3 px-4 font-medium text-slate-800">{{ $operation->location }}</td>
                         <td class="py-3 px-4">{{ $operation->store_code }}</td>
 

@@ -74,7 +74,9 @@
                     <tr class="hover:bg-slate-50/80 transition-colors">
                         <td class="py-3 px-4 font-medium">{{ $commission->date->format('d/m/Y') }}</td>
                         <td class="py-3 px-4 font-semibold text-slate-900">{{ $commission->plate_number }}</td>
-                        <td class="py-3 px-4 font-medium text-emerald-600">₺{{ number_format($commission->commission_amount) }}</td>
+                        <td class="py-3 px-4 font-medium {{ $commission->commission_amount < 0 ? 'text-rose-600' : 'text-emerald-600' }}">
+    ₺{{ number_format($commission->commission_amount) }}
+</td>
                         <td class="py-3 px-4 text-right">
                             <form action="{{ route('komisyon.destroy', $commission) }}" method="POST" onsubmit="return confirm('Bu komisyon kaydını silmek istediğinize emin misiniz?');" class="inline-block">
                                 @csrf
@@ -94,10 +96,20 @@
                 <tfoot class="bg-slate-900 text-white font-semibold">
                     <tr>
                         <td colspan="2" class="py-3.5 px-4 text-right">
-                            Filtrelenmiş Toplam Masraf (Tüm Sayfalar Dahil):
+                            Filtrelenmiş Toplam Navlun (Tüm Sayfalar Dahil):
                         </td>
-                        <td colspan="2" class="py-3.5 px-4 text-amber-400 text-base">
-                            ₺{{ number_format($totalCommission) }}
+                        <td colspan="2" class="py-3.5 px-4 text-base space-x-3">
+                            <span class="text-emerald-400" title="Gelir">
+                                +₺{{ number_format($totalIncome, 0, ',', '.') }}
+                            </span>
+                            <span class="text-slate-500">|</span>
+                            <span class="text-rose-400" title="Gider">
+                                ₺{{ number_format($totalExpense, 0, ',', '.') }}
+                            </span>
+                            <span class="text-slate-500">|</span>
+                            <span class="text-amber-400" title="Net Bakiye">
+                                Net: ₺{{ number_format($netTotal, 0, ',', '.') }}
+                            </span>
                         </td>
                     </tr>
                 </tfoot>

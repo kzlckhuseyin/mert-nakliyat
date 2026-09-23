@@ -28,14 +28,17 @@ class CommissionController extends Controller
         }
 
         // Tüm filtrelenmiş verilerin komisyon toplamı (Sayfalamadan bağımsız)
-        $totalCommission = (clone $query)->sum('commission_amount');
+        // Gelir, Gider ve Net Toplam Hesaplama
+        $totalIncome  = (clone $query)->where('commission_amount', '>', 0)->sum('commission_amount');
+        $totalExpense = (clone $query)->where('commission_amount', '<', 0)->sum('commission_amount');
+        $netTotal     = (clone $query)->sum('commission_amount');
 
         // Sayfalama (Her sayfada 25 veri) & URL parametrelerini koruma
         $commissions = $query->latest('date')
             ->paginate(25)
             ->withQueryString();
 
-        return view('komisyon.index', compact('commissions', 'totalCommission'));
+        return view('komisyon.index', compact('commissions', 'totalIncome', 'totalExpense', 'netTotal'));
     }
 
     public function create()
@@ -54,7 +57,7 @@ class CommissionController extends Controller
         $validated = $request->validate([
             'date' => 'required|date',
             'plate_number' => 'required|string|max:20',
-            'commission_amount' => 'required|integer|min:0',
+            'commission_amount' => 'required|integer',
         ]);
 
         Commission::create($validated);
