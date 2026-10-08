@@ -12,6 +12,7 @@ class Commission extends Model
         'date',
         'plate_number',
         'commission_amount',
+        'location',
     ];
 
     protected $casts = [

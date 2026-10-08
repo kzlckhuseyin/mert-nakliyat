@@ -17,6 +17,9 @@ class CommissionController extends Controller
             $plate = Str::upper(str_replace(' ', '', $request->plate_number));
             $query->where('plate_number', 'like', "%{$plate}%");
         }
+        if ($request->filled('location')) {
+            $query->where('location', $request->location);
+        }
 
         // 2. Tarih Aralığı Filtresi
         if ($request->filled('start_date')) {
@@ -58,6 +61,7 @@ class CommissionController extends Controller
             'date' => 'required|date',
             'plate_number' => 'required|string|max:20',
             'commission_amount' => 'required|integer',
+            'location'          => 'required|in:BAYRAMPAŞA,KADIKÖY,GEBZE,İZMİT,ADAPAZARI,ANKARA'
         ]);
 
         Commission::create($validated);

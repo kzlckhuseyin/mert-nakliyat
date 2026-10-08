@@ -28,6 +28,19 @@
                     <input type="text" name="plate_number" value="{{ request('plate_number') }}" placeholder="33NCR80"
                            class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50">
                 </div>
+                <!-- Konum Filtresi -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Konum</label>
+                    <select name="location" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 bg-white">
+                        <option value="">Tümü</option>
+                        <option value="BAYRAMPAŞA" {{ request('location') == 'BAYRAMPAŞA' ? 'selected' : '' }}>BAYRAMPAŞA</option>
+                        <option value="KADIKÖY" {{ request('location') == 'KADIKÖY' ? 'selected' : '' }}>KADIKÖY</option>
+                        <option value="GEBZE" {{ request('location') == 'GEBZE' ? 'selected' : '' }}>GEBZE</option>
+                        <option value="İZMİT" {{ request('location') == 'İZMİT' ? 'selected' : '' }}>İZMİT</option>
+                        <option value="ADAPAZARI" {{ request('location') == 'ADAPAZARI' ? 'selected' : '' }}>ADAPAZARI</option>
+                        <option value="ANKARA" {{ request('location') == 'ANKARA' ? 'selected' : '' }}>ANKARA</option>
+                    </select>
+                </div>
 
                 <!-- Başlangıç Tarihi -->
                 <div>
@@ -46,7 +59,7 @@
 
             <!-- Filtre Butonları -->
             <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
-                @if(request()->anyFilled(['plate_number', 'start_date', 'end_date']))
+                @if(request()->anyFilled(['plate_number','location','start_date', 'end_date']))
                     <a href="{{ route('komisyon.index') }}" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 transition-colors">
                         Filtreleri Temizle
                     </a>
@@ -64,6 +77,7 @@
             <thead>
                 <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     <th class="py-3.5 px-4">Tarih</th>
+                    <th class="py-3.5 px-4">Konum</th>
                     <th class="py-3.5 px-4">Plaka</th>
                     <th class="py-3.5 px-4">Masraf Tutar</th>
                     <th class="py-3.5 px-4 text-right">İşlem</th>
@@ -73,6 +87,7 @@
                 @forelse($commissions as $commission)
                     <tr class="hover:bg-slate-50/80 transition-colors">
                         <td class="py-3 px-4 font-medium">{{ $commission->date->format('d/m/Y') }}</td>
+                        <td class="py-3 px-4 font-medium text-slate-800">{{ $commission->location }}</td>
                         <td class="py-3 px-4 font-semibold text-slate-900">{{ $commission->plate_number }}</td>
                         <td class="py-3 px-4 font-medium {{ $commission->commission_amount < 0 ? 'text-rose-600' : 'text-emerald-600' }}">
     ₺{{ number_format($commission->commission_amount) }}
