@@ -33,6 +33,7 @@
             <option value="İZMİT" {{ old('location') == 'İZMİT' ? 'selected' : '' }}>İZMİT</option>
             <option value="ADAPAZARI" {{ old('location') == 'ADAPAZARI' ? 'selected' : '' }}>ADAPAZARI</option>
             <option value="ANKARA" {{ old('location') == 'ANKARA' ? 'selected' : '' }}>ANKARA</option>
+            <option value="MERT" {{ old('location') == 'MERT' ? 'selected' : '' }}>MERT</option>
         </select>
         @error('location') <span class="text-xs text-rose-500">{{ $message }}</span> @enderror
     </div>

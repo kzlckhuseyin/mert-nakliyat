@@ -61,7 +61,7 @@ class CommissionController extends Controller
             'date' => 'required|date',
             'plate_number' => 'required|string|max:20',
             'commission_amount' => 'required|integer',
-            'location'          => 'required|in:BAYRAMPAŞA,KADIKÖY,GEBZE,İZMİT,ADAPAZARI,ANKARA'
+            'location'          => 'required|in:BAYRAMPAŞA,KADIKÖY,GEBZE,İZMİT,ADAPAZARI,ANKARA,MERT'
         ]);
 
         Commission::create($validated);

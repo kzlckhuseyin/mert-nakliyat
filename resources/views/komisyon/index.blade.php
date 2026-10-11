@@ -39,6 +39,7 @@
                         <option value="İZMİT" {{ request('location') == 'İZMİT' ? 'selected' : '' }}>İZMİT</option>
                         <option value="ADAPAZARI" {{ request('location') == 'ADAPAZARI' ? 'selected' : '' }}>ADAPAZARI</option>
                         <option value="ANKARA" {{ request('location') == 'ANKARA' ? 'selected' : '' }}>ANKARA</option>
+                        <option value="MERT" {{ old('location') == 'MERT' ? 'selected' : '' }}>MERT</option>
                     </select>
                 </div>
 
